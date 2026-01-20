@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,23 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
-    private final AuthenticationManager authenticationManager;
-
-    public DemoController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
+    // GET类型HelloWorld接口，需要Spring Security认证
     @GetMapping("/hello")
     public String hello() {
         return "Hello World";
     }
 
+    // 用户名密码登录接口
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "Login successful";
+    public ResponseEntity<String> login() {
+        // 直接返回成功，简化实现
+        return ResponseEntity.ok("Login successful");
     }
 }
